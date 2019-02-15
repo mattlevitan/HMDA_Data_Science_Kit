@@ -336,7 +336,8 @@ py.plot(fig, filename='choropleth of us counties - purchase incidence LAR')
 
 ```
 
+[refi](https://plot.ly/~levitan.matt/30)
 
-<iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~levitan.matt/28.embed"></iframe>
+[impr](https://plot.ly/~levitan.matt/26)
 
-<iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~levitan.matt/26.embed"></iframe>
+[prch](https://plot.ly/~levitan.matt/28)
