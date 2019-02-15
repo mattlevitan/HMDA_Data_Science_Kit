@@ -289,6 +289,54 @@ cur.close()
 results_df.head()
 ```
 
+
+```python
+import plotly
+plotly.tools.set_credentials_file(username='levitan.matt', api_key='ezbwoqyVCTSUpcY0pcLc')
+import plotly.plotly as py
+import plotly.figure_factory as ff
+import numpy as np
+```
+```python
+results_df = results_df[ ~ results_df.fips.str.contains('NA', case=False,regex=True)]
+fips = results_df.fips
+values = results_df.prps_refi/(results_df.prps_impr + results_df.prps_refi+results_df.prps_prch)
+
+bins =list(np.mgrid[min(values):max(values):10j])
+
+fig =ff.create_choropleth(
+    fips=fips, values=values, scope=['usa'],
+    binning_endpoints=bins)
+py.iplot(fig, filename='choropleth of us counties - refinance incidence LAR')
+```
+
+```python
+fips = results_df.fips
+values = results_df.prps_impr
+
+bins =list(np.mgrid[min(values):max(values):10j])
+
+fig =ff.create_choropleth(
+    fips=fips, values=values, scope=['usa'],
+    binning_endpoints=bins)
+py.plot(fig, filename='choropleth of us counties - improvement incidence LAR')
+
+```
+
+```python
+fips = results_df.fips
+values = results_df.prps_prch
+
+bins =list(np.mgrid[min(values):max(values):10j])
+
+fig =ff.create_choropleth(
+    fips=fips, values=values, scope=['usa'],
+    binning_endpoints=bins)
+py.plot(fig, filename='choropleth of us counties - purchase incidence LAR')
+
+```
+
+
 <iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~levitan.matt/28.embed"></iframe>
 
 <iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~levitan.matt/26.embed"></iframe>
