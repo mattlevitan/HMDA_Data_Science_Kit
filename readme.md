@@ -56,6 +56,37 @@ These datasets include:
 ## **Working With HMDA Data**
 ##### The HMDA data are complex and care must be taken to ensure that analytics results are accurate. Please see [~~Working With HMDA Data~~]() for explanations of how to load, segment the data, handle NA values, and create accurate time-series tabulations.
 
+## Here be dragons
+
+Michael Jones, who self-reported as a **male, with Ethnicity as Puerto Rican and Race
+as White**, and Mary Stone, who self-reported as a **female, with Ethnicity as Not
+Hispanic or Latino and Race as Native Hawaiian**, applied for a **fully amortizing,
+fixed-rate, 30-year conventional loan to purchase a single family home**. Michael was
+**39** years old and Mary was **32** years old.
+The application date was 7/21/2018. Preapproval was **not requested**, and the applicants
+intended to occupy the home as a principal residence. The application was for the
+**amount of $162,000, with an interest rate of 3.875% for a site-built dwelling located at:
+456 Somewhere Avenue
+Los Angeles, CA 90049**
+In making the credit decision, Ficus Bank relied on a credit score from Experian Fair Isaac
+score of **794 for Michael** and a VantageScore 3.0 of **803 for Mary**, and a gross annual
+income of **$123**,000. The couple submitted an application directly to **Ficus Bank with
+Erika Otis, a loan officer whose NMLSR ID is 12345**. There were **no prepayment penalty
+terms, balloon payments, negative amortization, or other non-amortizing features for the loan**. The relied upon **debt-to-income ratio was 42%** and the relied upon
+combined **loan-to-value ratio was 80**%. Ficus Bank evaluated the application using Desktop
+Underwriter® which generated an Approve/Eligible result. The calculated rate spread was
+0.428. Based on the rate spread and the points and fees, this is **not a HOEPA loan.**
+The closing cost details disclosed to the borrower on the Closing Disclosure required by
+Regulation Z, 12 C.F.R. § 1026.19(f), are as follows:
+- **Origination Charges: $1,802**
+- **Total Loan Costs: $5,672**
+- **Total Discount Points: $0**
+- **Lender Credits: $0**
+
+This application **was approved** by Ficus Bank, and Michael and Mary decided to **accept the
+loan**. The loan closed in the name of Ficus Bank on 09/12/2018. This is a first lien on the
+dwelling. The value of the property relied upon in making the credit decision was **$202,500.**
+Ficus Bank later **sold this loan to Fannie Mae** in the same calendar year.
 
 #### Basic Requirements and Instructions
 
