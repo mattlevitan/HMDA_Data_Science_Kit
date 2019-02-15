@@ -5,7 +5,7 @@ USER="postgres" #the postgres username for the connection
 PASSWORD="" #user's password for the connection
 DATABASE="postgres" #Sets connection database
 HOST="localhost" #host address of the database
-PORT="5432" #connection port of the database
+PORT="5433" #connection port of the database
 
 if [ $# -gt 0 ]; then
 	for var in "$@"
