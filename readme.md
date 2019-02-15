@@ -14,9 +14,9 @@
 The primary goal of this repository is to provide data users with tools to enable them to produce accurate analytics results. The primary goal of this branch is to provide data users with tools to enable them to produce Geospatial visualizations from HMDA databases quickly and easily. Plotting the data on a map can aid users in confirming accurate attribution of records to geographies. Additionally, this repository provides an overview of HMDA resources, publications, and guidelines for proper use. This repository does not provide statutory interpretation or compliance assistance.
 
 
-A note to the reader: 
+A note to the reader:
 
-This branch was developed from  a public domain work of the _US Government_, including much of this readme. Broken (missing) links from the master cfb/HMDA_Data_Science_Kit have not been removed, you may find them noted with a strikethrough.
+This branch was developed from  a public domain work of the _US Government_, including parts of this readme. Broken (missing) links from the master repository cfb/HMDA_Data_Science_Kit have not been removed, for illustrative purposes, you may find them noted with a strikethrough.
 
 ## What Is HMDA?
 HMDA refers to the [Home Mortgage Disclosure Act of 1975](https://www.gpo.gov/fdsys/pkg/USCODE-2011-title12/pdf/USCODE-2011-title12-chap29.pdf).
@@ -154,3 +154,142 @@ This change can be undone by running the following:
 
 
 ## **Geospatial Plotting via Plotly**
+```python
+    import psycopg2 #Imports the Psycopg2 library
+    import pandas as pd #Imports the Pandas library and renames it "pd"
+```
+
+
+Establish connection parameters.
+
+If you have established a username and password, change user and password below to your own username and password.
+```python3
+connection_params = {"user":"postgres",
+                 "password":"",
+                 "dbname":"hmda",
+                 "host":"localhost"}
+```
+
+
+This function accepts a dictionary of connection parameters that must include:
+- user: the username to be used for the database session
+- password: the user's password
+- dbname: the name of the database for connection
+- host: the host location of the database
+
+```python
+def connect(params):
+    try:
+        conn = psycopg2.connect(**params)
+        print("I'm connected") #print a success message
+        return conn.cursor() #return a cursor object
+    except psycopg2.Error as e:
+        print("I am unable to connect to the database: ", e)
+        #print a fail message and the error, if any
+```
+
+Test the connection function, if everything is correct, it will print "I'm connected."
+
+```python
+cur = connect(params=connection_params)
+cur.close()
+```
+Close the cursor. This is important as open cursors can interfere with updates to data tables.
+
+
+
+When using Jupyter, it is best to open and close the cursor in the same code cell.
+If there are coding errors that interrupt the execution, the cursor will need to be reestablished.
+
+### Establishing a SQL Command String
+In Python, SQL commands are handled as multi-line strings, denoted by three double quotes at the beginning
+and 3 double quotes at the end for example:
+```
+"""
+SELECT  
+things
+FROM  
+data_table;
+""" ```
+
+These strings are then passed through a Psycopg2 cursor object (the connection function defined above) and executed by the Postgres database.
+
+
+
+```python
+
+sql_command = """
+              SELECT activity_year, COUNT (*) AS filer_count
+              FROM hmda_public.ts_2017
+              GROUP BY
+              activity_year;
+              """
+
+```
+The SQL statement inside cur.execute(<sql_command>) will retrieve the year and count of institutions for the 2017 Transmittal Sheet.
+```python
+cur = connect(connection_params)
+cur.execute(sql_command)
+results = cur.fetchall() #Saves the query results.
+cur.close()  
+```
+
+This implementation of psycopg2 performs four steps for each queury:
+- Connects to the database using parameters established above.
+- Uses the SQL statement above to pull year and count of filers for 2017.
+- Saves the query results.
+- Closes the connection to the database.
+
+
+```python
+results_df = pd.DataFrame(results, columns=[desc[0] for desc in cur.description])
+
+```
+
+Converts the output to a Pandas dataframe, The cursor object contains information about the SQL query.
+In this instance we use the column names from the data table to name the columns in our dataframe. The use of the _df in naming variables indicates that it is of a pd.DataFrame type.
+
+
+
+
+### Variabalizing a SQL Command String for Filtering
+As demonstrated in the previous example, Python strings can contain markers which enable substitution of values. This allows use of the .format() command to change the table reference for the SQL query. The string below selects the activity year and the filer count, variabalizing the year.   
+
+```python
+sql_command = """SELECT
+                    activity_year,
+                    COUNT (*) AS filer_count
+                 FROM
+                    hmda_public.ts_{year}
+                 GROUP BY
+                    activity_year;"""
+```
+
+A SQL command string may be modified to select a count of filers by a given category. The command string below not only variabalizes the year of the file to be selected but also creates an extention to the query that may be modified by the user.  
+
+
+```python
+sql_base = """SELECT CONCAT(lar_{year}.state_code,lar_{year}.county_code) AS fips,
+           count(case when lar_{year}.loan_purpose = '1' then 1 else null end) as prps_prch,
+           count(case when lar_{year}.loan_purpose = '2' then 1 else null end) as prps_impr,
+           count(case when lar_{year}.loan_purpose = '3' then 1 else null end) as prps_refi
+            FROM lar_{year} {extention}
+            ;"""
+
+extention = "GROUP BY state_code,county_code"
+```
+
+```python
+cur = connect(connection_params)
+year = 2016
+cur.execute(sql_base.format(year=year, extention=extention))
+results = cur.fetchall() #Returns the query results.
+results_df = pd.DataFrame(results, columns=[desc[0] for desc in cur.description])
+cur.close()
+results_df.head()
+```
+
+<div>
+    <a href="https://plot.ly/~levitan.matt/28/?share_key=Qgcv0abNUbnj2qyHmyal7f" target="_blank" title="choropleth of us counties - purchase incidence LAR" style="display: block; text-align: center;"><img src="https://plot.ly/~levitan.matt/28.png?share_key=Qgcv0abNUbnj2qyHmyal7f" alt="choropleth of us counties - purchase incidence LAR" style="max-width: 100%;width: 900px;"  width="900" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+    <script data-plotly="levitan.matt:28" sharekey-plotly="Qgcv0abNUbnj2qyHmyal7f" src="https://plot.ly/embed.js" async></script>
+</div>
