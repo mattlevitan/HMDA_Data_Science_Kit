@@ -289,7 +289,6 @@ cur.close()
 results_df.head()
 ```
 
-<div>
-    <a href="https://plot.ly/~levitan.matt/28/?share_key=Qgcv0abNUbnj2qyHmyal7f" target="_blank" title="choropleth of us counties - purchase incidence LAR" style="display: block; text-align: center;"><img src="https://plot.ly/~levitan.matt/28.png?share_key=Qgcv0abNUbnj2qyHmyal7f" alt="choropleth of us counties - purchase incidence LAR" style="max-width: 100%;width: 900px;"  width="900" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-    <script data-plotly="levitan.matt:28" sharekey-plotly="Qgcv0abNUbnj2qyHmyal7f" src="https://plot.ly/embed.js" async></script>
-</div>
+<iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~levitan.matt/28.embed"></iframe>
+
+<iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~levitan.matt/26.embed"></iframe>
